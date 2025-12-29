@@ -17,7 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', Router);
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
+
 
 // 🔑 Connect to local MongoDB
 Connection();
