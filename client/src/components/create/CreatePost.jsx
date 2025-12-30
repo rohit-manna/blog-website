@@ -60,27 +60,53 @@ const CreatePost = () => {
     const { account } = useContext(DataContext);
 
     const url = post.picture ? post.picture : 'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80';
-    
-    useEffect(() => {
-        const getImage = async () => { 
-            if(file) {
-                const data = new FormData();
-                data.append("name", file.name);
-                data.append("file", file);
-                
-                const response = await API.uploadFile(data);
-                post.picture = response.data;
+
+  useEffect(() => {
+    const uploadImage = async () => {
+        if (file) {
+            const data = new FormData();
+            data.append("file", file);
+
+            const response = await API.uploadFile(data);
+
+            if (response.isSuccess) {
+                setPost(prev => ({
+                    ...prev,
+                    picture: response.data.filename
+                }));
             }
         }
-        getImage();
-        post.categories = location.search?.split('=')[1] || 'All';
-        post.username = account.username;
-    }, [file])
+    };
+
+    uploadImage();
+
+    setPost(prev => ({
+        ...prev,
+        categories: location.search?.split('=')[1] || 'All',
+        username: account.username,
+        createdDate: new Date()
+    }));
+
+}, [file, location.search, account.username]);
+
+
 
     const savePost = async () => {
-        await API.createPost(post);
-        navigate('/');
+    if (!post.title || !post.description) {
+        alert('Title and Description are required');
+        return;
     }
+
+    try {
+        const response = await API.createPost(post);
+        if (response.isSuccess) {
+            navigate('/');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 
     const handleChange = (e) => {
         setPost({ ...post, [e.target.name]: e.target.value });

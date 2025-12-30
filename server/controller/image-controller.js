@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 let gfs;
-
 const conn = mongoose.connection;
 
 conn.once('open', () => {
@@ -12,11 +11,12 @@ conn.once('open', () => {
 
 export const uploadImage = (request, response) => {
     if (!request.file) {
-        return response.status(404).json("File not found");
+        return response.status(404).json({ msg: "File not found" });
     }
 
-    const imageUrl = `http://localhost:8000/file/${request.file.filename}`;
-    response.status(200).json(imageUrl);
+    response.status(200).json({
+        filename: request.file.filename
+    });
 };
 
 export const getImage = async (request, response) => {
