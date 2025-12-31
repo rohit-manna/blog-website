@@ -27,7 +27,7 @@ const About = () => {
         <Box>
             <Banner/>
             <Wrapper>
-                <Typography variant="h3">Blogs Website By Rohit Manna</Typography>
+                <Typography variant="h3">Blogs Website By Rohit Kumar Hansdah</Typography>
                 <Text variant="h5">Hi, I’m Rohit. I’m a computer applications student with an interest in building practical web projects and learning how technology solves real-world problems..<br />
                     If you are interested, you can view some of my favorite projects here
                     <Box component="span" style={{ marginLeft: 5 }}>
